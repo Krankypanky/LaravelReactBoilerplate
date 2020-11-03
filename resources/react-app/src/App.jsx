@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navigation from "./Components/Navigation/Navigation";
 import Loading from "./Components/Loading/Loading";
 import Cart from "./Components/Cart/Cart";
@@ -8,107 +8,81 @@ import config from "./config/config.default"
 
 export const AppContext = React.createContext({});
 
-export default class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: true,
-            books: [],
-            cart: [],
-            isDrawerOpened: false,
-        };
-    }
+const App = () => {
+    const [books, setBooks] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [cart, updateCart] = useState([]);
+    const [isDrawerOpened, setIsDrawerOpen] = useState(false);
 
-    //wird direkt nach dem erstellen (mounten) der Komponente ausgeführt
-    componentDidMount() {
+    useEffect(() => {
         axios.get(config.API_URL + "/api/books")
             .then((response) => {
                 const books = response.data;
-                this.setState({ books });
+                setBooks(books);
             })
             .catch((e) => console.error(e))
             .finally(() => {
-                this.setState({
-                    loading: false,
-                });
+                setLoading(false);
             });
-    }
+    }, [])
 
-    //wird direkt nach dem zerstören der komponente ausgeführt
-    componentWillUnmount() { }
-
-    static getDerivedStateFromProps() {
-        return {};
-    }
-
-    addItemToCart = (book) => {
-        this.setState({
-            cart: [...this.state.cart, book],
-        });
+    const addItemToCart = (book) => {
+        updateCart([...cart, book]);
     };
 
-    removeItemFromCart = (index) => {
+    const removeItemFromCart = (index) => {
         // aktuellen durchgang des arrays -> index
-        let newCart = [...this.state.cart];
+        let newCart = [...cart];
 
         // lösche item aus dem cart - (Array).splice
         newCart.splice(index, 1);
 
         // setze neuen state mit neuem array ohne dem item mit dem index
-        this.setState({
-            cart: newCart,
-        });
+        updateCart(newCart);
+
     };
 
-    toggleDrawer = () => {
-        this.setState({
-            isDrawerOpened: !this.state.isDrawerOpened,
-        });
+    const toggleDrawer = () => {
+        setIsDrawerOpen(!isDrawerOpened);
     };
 
-    render() {
-        const { books, loading, cart, isDrawerOpened } = this.state;
+    const getGeneratedClass = defaultClass => {
+        const className = [defaultClass];
 
-        const getGeneratedClass = (defaultClass) => {
-            const className = [defaultClass];
-            if (isDrawerOpened) {
-                className.push("drawer-opened");
-            } else {
-                className.push("drawer-closed");
-            }
-            return className.join(" ");
-        };
+        if (isDrawerOpened) {
+            className.push("drawer-opened");
+        } else {
+            className.push("drawer-closed");
+        }
 
-        return (
-            <div>
-                <AppContext.Provider
-                    value={{
-                        isDrawerOpened: isDrawerOpened,
-                        books: books,
-                        cart: cart,
-                        addItemToCart: this.addItemToCart,
-                        removeItemFromCart: this.removeItemFromCart,
-                        toggleDrawer: this.toggleDrawer,
-                    }}>
-                    <Navigation />
+        return className.join(" ");
+    };
 
-                    <Loading loading={loading} />
+    return <div>
+        <AppContext.Provider value={{
+            isDrawerOpened,
+            books,
+            cart,
+            addItemToCart,
+            removeItemFromCart,
+            toggleDrawer
+        }}>
+            <Navigation />
 
-                    <div className={getGeneratedClass("main-wrapper")}>
-                        <div className='main-col-wrapper'>
-                            <div className='content-wrapper'>
-                                {!loading && routes}
-                            </div>
-                        </div>
+            <Loading loading={loading} />
+
+            <div className={getGeneratedClass("main-wrapper")}>
+                <div className='main-col-wrapper'>
+                    <div className='content-wrapper'>
+                        {!loading && routes}
                     </div>
-                    <div className={getGeneratedClass("drawer-wrapper")}>
-                        <Cart
-                            cart={cart}
-                            removeItemFromCart={this.removeItemFromCart}
-                        />
-                    </div>
-                </AppContext.Provider>
+                </div>
             </div>
-        );
-    }
-}
+            <div className={getGeneratedClass("drawer-wrapper")}>
+                <Cart cart={cart} removeItemFromCart={removeItemFromCart} />
+            </div>
+        </AppContext.Provider>
+    </div>;
+};
+
+export default App;
