@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class BookController extends Controller
 {
@@ -17,15 +19,6 @@ class BookController extends Controller
         return Book::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,27 +28,44 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $book = $request->book;
+
+        $rules = [
+            'title'        => 'required|string|max:255|min:2',
+            'isbn'  => 'required|string|max:255|min:2',
+            'subtitle'   => 'required|string|max:255|min:2',
+            'author'  => 'required|string|max:255|min:2',
+        ];
+
+        $validation = Validator::make($book, $rules);
+
+        // throw exception if the validation fails
+        if ($validation->fails()) {
+            throw new ValidationException($validation->messages());
+        }
+
+        return Book::create($book);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Book  $book
+     * @param  string $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Book $book, $id)
     {
-        //
+        return $book->find($id);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Book $book)
     {
         //
     }
@@ -64,10 +74,10 @@ class BookController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $book)
     {
         //
     }
@@ -75,10 +85,10 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Book $book)
     {
         //
     }
