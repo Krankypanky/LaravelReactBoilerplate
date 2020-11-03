@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import Loading from './Components/Loading/Loading';
 
 function App() {
 
@@ -15,7 +16,6 @@ function App() {
       .then((response) => setBook(response.data))
       .catch(error => console.error(error))
       .finally(() => setLoading(false));
-
   }, [])
 
   console.log(books);
@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div>
-      {loading ? <div>Loading</div> : null}
+      <Loading loading={loading} alternativeText={"Ich bin nun der Text"} />
       <ul>
         {(!loading && books.length) ?
           books.map(book =>
