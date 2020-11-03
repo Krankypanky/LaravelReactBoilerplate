@@ -5,7 +5,7 @@ import "./BookListing.scss";
 function BookListing(props) {
 
     // books destructuring
-    const { books } = props;
+    const { books, addToCart } = props;
 
     // books rendern
 
@@ -19,16 +19,17 @@ function BookListing(props) {
     return <ul className={"BookListing"}>
         {books.map(book =>
             <li key={book.id} className="BookListing__item">
-                <a href="">
-                    <img src={book.image} alt={book.title} width="100" />
-                </a>
+                <img src={book.image} alt={book.title} width="100" />
+                <button onClick={() => addToCart(book)}>Add to Cart</button>
             </li>
         )}
     </ul>
 }
 
 BookListing.propTypes = {
-    books: PropTypes.array.isRequired
+    books: PropTypes.array.isRequired,
+    cart: PropTypes.array.isRequired,
+    addToCart: PropTypes.func,
 }
 
 

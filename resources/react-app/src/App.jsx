@@ -21,15 +21,23 @@ function App() {
   }, [])
 
   // functions
+  function addToCart(book){
+    console.log(book, "triggered");
+    const updatedCart = [...cart];
+    updatedCart.push(book)
+    updateCart(updatedCart);
+  }
 
 
   if(loading){
     return <Loading loading={loading} alternativeText={"Ich bin nun der Text"} />
   }
 
+  console.log(cart);
+
   return (
     <div>
-      <BookListing books={books}/>
+      <BookListing books={books} cart={cart} addToCart={addToCart}/>
     </div>
   );
 }
