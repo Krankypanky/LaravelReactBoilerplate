@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { AddSVG } from "../Icons/Icons.jsx";
 import "./BookListing.scss"
-import { Link } from 'react-router-dom';
 
 const BookListing = (props) => {
 
@@ -17,9 +16,7 @@ const BookListing = (props) => {
                 books.map((book, index) =>
                     <li className="book-overview-list-item" key={book.id}>
                         <p>{book.title}</p>
-                        <Link to={"/details/" + book.id}>
-                            <img src={book.image} alt={book.title} />
-                        </Link>
+                        <img src={book.image} alt={book.title} />
                         <button
                             className="cart-button"
                             onClick={() => {
