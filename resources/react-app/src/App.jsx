@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import Navigation from "./Components/Navigation/Navigation";
 import Loading from "./Components/Loading/Loading";
 import Cart from "./Components/Cart/Cart";
-import routes from "./routes";
 import axios from "axios";
 import config from "./config/config.default"
+import BookListing from './Components/BookListing/BookListing';
 
 export const AppContext = React.createContext({});
 
@@ -32,13 +32,10 @@ const App = () => {
 
     const removeItemFromCart = (index) => {
         // aktuellen durchgang des arrays -> index
-        let newCart = [...cart];
 
         // lösche item aus dem cart - (Array).splice
-        newCart.splice(index, 1);
 
         // setze neuen state mit neuem array ohne dem item mit dem index
-        updateCart(newCart);
 
     };
 
@@ -59,29 +56,21 @@ const App = () => {
     };
 
     return <div>
-        <AppContext.Provider value={{
-            isDrawerOpened,
-            books,
-            cart,
-            addItemToCart,
-            removeItemFromCart,
-            toggleDrawer
-        }}>
-            <Navigation />
 
-            <Loading loading={loading} />
+        <Navigation toggleDrawer={toggleDrawer} isDrawerOpened={isDrawerOpened}/>
 
-            <div className={getGeneratedClass("main-wrapper")}>
-                <div className='main-col-wrapper'>
-                    <div className='content-wrapper'>
-                        {!loading && routes}
-                    </div>
+        <Loading loading={loading} />
+
+        <div className={getGeneratedClass("main-wrapper")}>
+            <div className='main-col-wrapper'>
+                <div className='content-wrapper'>
+                    {!loading && <BookListing books={books} toggleDrawer={toggleDrawer} addItemToCart={addItemToCart} isDrawerOpened={isDrawerOpened} />}
                 </div>
             </div>
-            <div className={getGeneratedClass("drawer-wrapper")}>
-                <Cart cart={cart} removeItemFromCart={removeItemFromCart} />
-            </div>
-        </AppContext.Provider>
+        </div>
+        <div className={getGeneratedClass("drawer-wrapper")}>
+            <Cart cart={cart} removeItemFromCart={removeItemFromCart} />
+        </div>
     </div>;
 };
 

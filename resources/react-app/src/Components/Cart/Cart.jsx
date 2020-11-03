@@ -1,32 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { DeleteSVG } from '../Icons/Icons';
 
 import "./Cart.scss";
 
 const Cart = (props) => {
-    let totalPrice = 0;
+    
+    // TODO: Wenn warenkorb gerendert -> Preis berechnen
 
     return <div className="cart-wrapper">
         <h2 className="cart-headline">
             Warenkorb
         </h2>
         <hr/>
+        TODO: Warenkorb rendern <br/>
+        TODO: Text rendern wenn Warenkorb leer
         <ul className="cart-list">
-            {props.cart && !props.cart.length && "Aktuell gibt es keine Bücher im Warenkorb."}
-            {props.cart.map((cartItem, index) => {
-                totalPrice += cartItem.price;
-                return <li key={cartItem.id + " " + index} className="cart-list-item">
-                    <p>{cartItem.title} - <strong>{cartItem.price} €</strong></p>
-                    <button onClick={() => props.removeItemFromCart(index)}>
-                        <DeleteSVG/>
-                    </button>
-                </li>
-            })}
+            
         </ul>
         <div className="cart-footer">
             <span>Preis:</span>
-            <span>{totalPrice.toFixed(2)} €
+            
+            <span>0 €
                       </span>
         </div>
     </div>;
