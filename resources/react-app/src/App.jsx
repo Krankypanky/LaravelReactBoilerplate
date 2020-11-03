@@ -10,6 +10,7 @@ function App() {
   // state
   const [loading, setLoading] = useState(true);
   const [books, setBook] = useState([])
+  const [cart, updateCart] = useState([])
 
   // hooks
   useEffect(() => {
