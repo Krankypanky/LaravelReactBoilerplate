@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Loading from './Components/Loading/Loading';
+import BookListing from './Components/BookListing/BookListing';
 
 function App() {
 
@@ -18,26 +19,16 @@ function App() {
       .finally(() => setLoading(false));
   }, [])
 
-  console.log(books);
-
   // functions
 
 
+  if(loading){
+    return <Loading loading={loading} alternativeText={"Ich bin nun der Text"} />
+  }
 
   return (
     <div>
-      <Loading loading={loading} alternativeText={"Ich bin nun der Text"} />
-      <ul>
-        {(!loading && books.length) ?
-          books.map(book =>
-            <li key={book.id}>
-              <img src={book.image} alt={book.title} width="100"/>
-            </li>
-          )
-          : null}
-      </ul>
-
-
+      <BookListing books={books}/>
     </div>
   );
 }
