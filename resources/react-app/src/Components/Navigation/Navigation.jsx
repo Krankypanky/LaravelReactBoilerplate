@@ -1,7 +1,6 @@
 import React from "react";
 import "./Navigation.scss";
-import { Link } from "react-router-dom";
-// import classNames from "classnames";
+import classNames from "classnames";
 
 const DrawerIcon = (
     <svg
@@ -13,31 +12,31 @@ const DrawerIcon = (
     </svg>
 );
 
-// const getNavBarWrapperClass = classNames({
-//     "nav-bar-wrapper ": true,
-//     "drawer-opened": isDrawerOpened,
-//     "drawer-closed": !isDrawerOpened,
-// });
+
 
 const Navigation = (props) => {
 
     const {toggleDrawer, isDrawerOpened} = props;
     console.log(props);
 
-    const getNavBarWrapperClass = () => {
-        const className = ["nav-bar-wrapper"];
-        if (isDrawerOpened) {
-            className.push("drawer-opened");
-        } else {
-            className.push("drawer-closed");
-        }
-        return className.join(" ");
-    };
-    
- 
+    // const getNavBarWrapperClass = () => {
+    //     const className = ["nav-bar-wrapper"];
+    //     if (isDrawerOpened) {
+    //         className.push("drawer-opened");
+    //     } else {
+    //         className.push("drawer-closed");
+    //     }
+    //     return className.join(" ");
+    // };
+
+    const getNavBarWrapperClass = classNames({
+        "nav-bar-wrapper ": true,
+        "drawer-opened": isDrawerOpened,
+        "drawer-closed": !isDrawerOpened,
+    });
 
     return (
-        <div className={getNavBarWrapperClass()}>
+        <div className={getNavBarWrapperClass}>
             <nav className='nav-bar'>
                 <a href="/">Reactshop</a>
                 <button

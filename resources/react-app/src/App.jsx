@@ -31,11 +31,15 @@ const App = () => {
     };
 
     const removeItemFromCart = (index) => {
-        // aktuellen durchgang des arrays -> index
+
+        // kopie erstellen
+        const copiedCart = [...cart];
 
         // lösche item aus dem cart - (Array).splice
+        copiedCart.splice(index, 1);
 
         // setze neuen state mit neuem array ohne dem item mit dem index
+        updateCart(copiedCart);
 
     };
 
