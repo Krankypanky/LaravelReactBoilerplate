@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import "./Navigation.scss";
 import classNames from "classnames";
+import { AppContext } from '../../App';
 
 const DrawerIcon = (
     <svg
@@ -12,12 +13,12 @@ const DrawerIcon = (
     </svg>
 );
 
+const Navigation = () => {
 
+    // ContextConsumer
+    const context = useContext(AppContext);
 
-const Navigation = (props) => {
-
-    const {toggleDrawer, isDrawerOpened} = props;
-    console.log(props);
+    const {toggleDrawer, isDrawerOpened} = context;
 
     // const getNavBarWrapperClass = () => {
     //     const className = ["nav-bar-wrapper"];

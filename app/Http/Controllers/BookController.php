@@ -28,21 +28,44 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $book = $request->book;
+
+        $book = [
+            "title" => $request["title"],
+            "description" => $request["description"],
+            "subtitle" => $request["subtitle"],
+            "image" => $request["image"],
+            "price" => $request["price"],
+            "pages" => $request["pages"],
+            "author" => $request["author"],
+            "published" => $request["published"],
+            "publisher" => $request["publisher"],
+            "isbn" => $request["isbn"],
+            "website" => $request["website"]
+        ];
 
         $rules = [
             'title'        => 'required|string|max:255|min:2',
             'isbn'  => 'required|string|max:255|min:2',
             'subtitle'   => 'required|string|max:255|min:2',
             'author'  => 'required|string|max:255|min:2',
+            "description" => 'required|string|max:255|min:2',
+            "image" => "required|max:10000|mimes:gif,png,jpg,jpeg",
+            "price" => 'required|int|min:0',
+            "pages" => 'required|int|min:0',
+            "published" => 'required|date',
+            "publisher" => 'required|string|max:255|min:2',
+            "website" => 'required|url|max:255|min:2'
         ];
 
         $validation = Validator::make($book, $rules);
 
         // throw exception if the validation fails
         if ($validation->fails()) {
-            throw new ValidationException($validation->messages());
+            throw new ValidationException($validation);
         }
+
+        $path = $book["image"]->store('books', "public");
+        $book["image"] = $path;
 
         return Book::create($book);
     }

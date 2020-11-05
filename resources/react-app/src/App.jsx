@@ -4,9 +4,11 @@ import Loading from "./Components/Loading/Loading";
 import Cart from "./Components/Cart/Cart";
 import axios from "axios";
 import config from "./config/config.default"
-import BookListing from './Components/BookListing/BookListing';
+import routes from "./routes"
 
 export const AppContext = React.createContext({});
+
+// ContextProvider & ContextConsumer
 
 const App = () => {
     const [books, setBooks] = useState([]);
@@ -61,20 +63,33 @@ const App = () => {
 
     return <div>
 
-        <Navigation toggleDrawer={toggleDrawer} isDrawerOpened={isDrawerOpened}/>
+        <AppContext.Provider value={{
+            // isDrawerOpened: isDrawerOpened
+            // =
+            isDrawerOpened,
+            books,
+            cart: cart,
+            addItemToCart,
+            removeItemFromCart,
+            toggleDrawer
+        }}>
 
-        <Loading loading={loading} />
+            <Navigation/>
 
-        <div className={getGeneratedClass("main-wrapper")}>
-            <div className='main-col-wrapper'>
-                <div className='content-wrapper'>
-                    {!loading && <BookListing books={books} toggleDrawer={toggleDrawer} addItemToCart={addItemToCart} isDrawerOpened={isDrawerOpened} />}
+            <Loading loading={loading} />
+
+            <div className={getGeneratedClass("main-wrapper")}>
+                <div className='main-col-wrapper'>
+                    <div className='content-wrapper'>
+                        {!loading && routes}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div className={getGeneratedClass("drawer-wrapper")}>
-            <Cart cart={cart} removeItemFromCart={removeItemFromCart} />
-        </div>
+            <div className={getGeneratedClass("drawer-wrapper")}>
+                <Cart/>
+            </div>
+
+        </AppContext.Provider>
     </div>;
 };
 

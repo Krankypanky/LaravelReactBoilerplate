@@ -1,11 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useContext } from "react";
 import { AddSVG } from "../Icons/Icons.jsx";
 import "./BookListing.scss"
+import { Link } from 'react-router-dom';
+import { AppContext } from '../../App.jsx';
 
-const BookListing = (props) => {
+const BookListing = () => {
 
-    const { books, toggleDrawer, addItemToCart, isDrawerOpened } = props
+    const context = useContext(AppContext);
+
+    const { books, toggleDrawer, addItemToCart, isDrawerOpened } = context;
 
     if (!books || !books.length) {
         return "Aktuell gibt es keine Bücher"
@@ -16,7 +19,11 @@ const BookListing = (props) => {
                 books.map((book, index) =>
                     <li className="book-overview-list-item" key={book.id}>
                         <p>{book.title}</p>
-                        <img src={book.image} alt={book.title} />
+
+                        <Link to={"/details/" + book.id}>
+                            <img src={book.image} alt={book.title} />
+                        </Link>
+
                         <button
                             className="cart-button"
                             onClick={() => {
@@ -32,17 +39,7 @@ const BookListing = (props) => {
             }
         </ul>
     </>
-
-
 };
-
-BookListing.propTypes = {
-    books: PropTypes.array,
-    addItemToCart: PropTypes.func,
-    isDrawerOpened: PropTypes.bool,
-    toggleDrawer: PropTypes.func
-};
-
 export default BookListing;
 
 

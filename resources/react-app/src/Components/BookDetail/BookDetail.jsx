@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-// import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import axios from "axios";
 import config from "./../../config/config.default";
@@ -8,8 +8,10 @@ import config from "./../../config/config.default";
 import "./BookDetail.scss";
 
 const BookDetail = () => {
-    // const params = useParams();
-    // const history = useHistory();
+    const params = useParams();
+    const history = useHistory();
+
+    console.log(params);
 
     const [book, setBook] = useState();
     const [loading, setLoading] = useState(true);
@@ -36,7 +38,7 @@ const BookDetail = () => {
     return (
         <div className="book-detail">
             <div className='book-detail-header'>
-                {/* <button onClick={() => history.goBack()}>Back</button> */}
+                <button onClick={() => history.goBack()}>Back</button>
                 <h1>{book.title}</h1>
             </div>
             <p>{book.description}</p>
