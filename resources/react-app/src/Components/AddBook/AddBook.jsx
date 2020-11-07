@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import config from "./../../config/config.default";
+import Loading from "./../Loading/Loading";
 
 
 
@@ -10,17 +11,17 @@ import { useHistory } from 'react-router-dom';
 const AddBook = () => {
 
     const [newBook, setNewBook] = useState({
-        isbn: 3333,
-        title: "fddfdf",
-        subtitle: "dfdfdf",
-        author: "dfdfdf",
-        published: "dfdfdf",
-        publisher: "dfdff",
-        pages: 343434,
-        description: "dfdf",
-        image: "343443",
-        price: 343434,
-        website: "https://hdhdh.de"
+        isbn: "",
+        title: "",
+        subtitle: "",
+        author: "",
+        published: "",
+        publisher: "",
+        pages: "",
+        description: "",
+        image: "",
+        price: "",
+        website: ""
     });
 
     const [errors, setErrors] = useState(null);
@@ -67,11 +68,11 @@ const AddBook = () => {
 
         axios.post(config.API_URL + "/api/book/create", formData, axiosConfig)
             .then(response => {
-                console.log(response);
-                history.push("/")
+
+               window.location.href = "/";
             })
             .catch(err => {
-                console.log(err.response);
+               
                 if(err.response.data && err.response.data.errors){
                     setErrors(err.response.data.errors)
                 }
@@ -84,6 +85,7 @@ const AddBook = () => {
     console.log(newBook);
 
     return <div className="add-form-wrapper">
+        <Loading loading={loading}/>
         <h1> Neues Buch erstellen </h1>
         <hr />
         <form onSubmit={handleSubmit}>
